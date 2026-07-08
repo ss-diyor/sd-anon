@@ -38,7 +38,7 @@ async def cmd_start(message: Message, command: CommandObject):
             "Foydalanuvchilar xabar yozganda ular sizga shu yerga keladi.\n"
             "Ularga reply qilish uchun ularning xabariga oddiy Telegram-reply qiling.\n\n"
             "Komandalar:\n"
-            "/newsource <kod> <nom> — yangi manba link yaratish\n"
+            "/newsource kod nom — yangi manba link yaratish\n"
             "/sources — barcha manbalar statistikasi"
         )
         return
