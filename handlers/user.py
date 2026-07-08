@@ -39,7 +39,8 @@ async def cmd_start(message: Message, command: CommandObject):
             "Ularga reply qilish uchun ularning xabariga oddiy Telegram-reply qiling.\n\n"
             "Komandalar:\n"
             "/newsource kod nom — yangi manba link yaratish\n"
-            "/sources — barcha manbalar statistikasi"
+            "/sources — barcha manbalar statistikasi\n"
+            "/whois — (xabarga reply qilib) yuboruvchini bilish"
         )
         return
 
@@ -74,11 +75,9 @@ async def handle_incoming_message(message: Message, bot: Bot):
     source_label = source_code or "noma'lum"
     info_text = (
         f"📩 <b>Yangi anonim xabar</b>\n"
-        f"👤 {message.from_user.first_name or ''} "
-        f"(@{message.from_user.username or 'username yoʻq'})\n"
-        f"🆔 <code>{message.from_user.id}</code>\n"
         f"📍 Manba: <b>{source_label}</b>\n\n"
-        f"↩️ Javob berish uchun shu xabarga (yoki yuqoridagi nusxaga) reply qiling."
+        f"↩️ Javob berish uchun shu xabarga (yoki yuqoridagi nusxaga) reply qiling.\n"
+        f"🔎 Yuboruvchini bilish uchun shu xabarga <code>/whois</code> deb reply qiling."
     )
 
     await bot.send_message(
