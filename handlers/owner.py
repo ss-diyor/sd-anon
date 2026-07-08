@@ -76,6 +76,44 @@ async def cmd_stats(message: Message):
     )
 
 
+@router.message(Command("whois"))
+async def cmd_whois(message: Message):
+    if not message.reply_to_message:
+        await message.answer(
+            "ℹ️ Xabar yuboruvchisini bilish uchun o'sha xabarga (yoki uning nusxasiga) "
+            "reply qilib <code>/whois</code> deb yozing.",
+            parse_mode="HTML",
+        )
+        return
+
+    replied_to_id = message.reply_to_message.message_id
+    record = await queries.get_message_by_owner_msg_id(replied_to_id)
+    if not record:
+        await message.answer(
+            "⚠️ Bu xabar uchun ma'lumot topilmadi. "
+            "Iltimos, foydalanuvchi yuborgan xabarning o'ziga (nusxasiga) reply qiling."
+        )
+        return
+
+    username = record["sender_username"]
+    username_text = f"@{username}" if username else "username yoʻq"
+    first_name = record["sender_first_name"] or "-"
+    source_label = record["source_code"] or "noma'lum"
+    sent_at = record["sent_at"].strftime("%Y-%m-%d %H:%M")
+    replied_mark = "✅ ha" if record["replied"] else "❌ yo'q"
+
+    await message.answer(
+        f"👤 <b>Yuboruvchi ma'lumotlari</b>\n\n"
+        f"Ism: {first_name}\n"
+        f"Username: {username_text}\n"
+        f"🆔 ID: <code>{record['sender_telegram_id']}</code>\n"
+        f"📍 Manba: <b>{source_label}</b>\n"
+        f"🕒 Yuborilgan: {sent_at}\n"
+        f"↩️ Javob berilgan: {replied_mark}",
+        parse_mode="HTML",
+    )
+
+
 @router.message(F.reply_to_message)
 async def handle_owner_reply(message: Message, bot: Bot):
     replied_to_id = message.reply_to_message.message_id
